@@ -14,7 +14,6 @@ typedef struct vectors{
     int *arr;
     int size;
     int capacity;
-    int (*pop)();
     bool empty;
 }vector;
 
@@ -41,7 +40,7 @@ void append(vector *v, int num){
     v->empty = 0;
 }
 
-int _pop(vector *v) {
+int pop(vector *v) {
     if(v->size == 0){
         return NULL;
     }
@@ -59,15 +58,42 @@ int get(vector *v, int position){
     }
     else {
         Exception err = new_exception(1);
-        printf("%s\n",err.exp_name);
+        printf("%s %d\n",err.exp_name, position);
         exit(-1);
     }
 }
+
+void set(vector *v, int position, int num){
+    if(position < v->size){
+        *(v->arr + position) = num;
+    }
+    else {
+        Exception err = new_exception(1);
+        printf("%s %d\n", err.exp_name, position);
+        exit(-1);
+    }
+}
+
+void insert_at(vector *v, int position, int num){
+    int temp, temp2=num, i;
+    if(v->size == v->capacity){
+        _extend_vector(v);
+    }
+    if(position < v->size){
+        for(i=position; i< v->size; i++){
+            temp = *(v->arr + i);
+            *(v->arr + i) = temp2;
+            temp2 = temp;
+        }
+        *(v->arr + v->size) = temp2;
+        v->size += 1;
+    }
+}
+
 
 void init_vector(vector *v){
     v->arr = malloc(INIT_SIZE* sizeof(int));
     v->size = 0;
     v->capacity = 16;
     v->empty = 1;
-    v->pop = _pop;
 }
