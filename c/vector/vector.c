@@ -14,15 +14,9 @@ typedef struct vectors{
     int *arr;
     int size;
     int capacity;
+    int (*pop)();
     bool empty;
 }vector;
-
-void init_vector(vector *v){
-    v->arr = malloc(INIT_SIZE* sizeof(int));
-    v->size = 0;
-    v->capacity = 16;
-    v->empty = 1;
-}
 
 void _shrink_vector(vector *v){
     v->capacity /= 2;
@@ -47,7 +41,7 @@ void append(vector *v, int num){
     v->empty = 0;
 }
 
-int pop(vector *v) {
+int _pop(vector *v) {
     if(v->size == 0){
         return NULL;
     }
@@ -70,10 +64,10 @@ int get(vector *v, int position){
     }
 }
 
-void main(){
-    vector x;
-    init_vector(&x);
-    append(&x, 100);
-    printf("%d\n", get(&x, 2));
-    printf("%d\n", pop(&x));
+void init_vector(vector *v){
+    v->arr = malloc(INIT_SIZE* sizeof(int));
+    v->size = 0;
+    v->capacity = 16;
+    v->empty = 1;
+    v->pop = _pop;
 }

@@ -1,3 +1,8 @@
+/* Copyright (c) 2017 arjunsinghy96
+ *
+ * My little exception implementation for the vectors
+ */
+
 #include<stdio.h>
 #include<string.h>
 
