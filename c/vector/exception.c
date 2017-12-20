@@ -15,10 +15,10 @@ Exception new_exception(int num){
     Exception expt;
     expt.exp_no = num;
     switch(num){
-        case 0:
+        case 41:
             strcpy(expt.exp_name, "Empty vector");
             break;
-        case 1:
+        case 42:
             strcpy(expt.exp_name, "Index out of bounds");
             break;
         default:

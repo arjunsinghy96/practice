@@ -1,11 +1,9 @@
 /* Copyright (c) 2017 arjunsinghy96
- *
- * A primary implementation of dynamic array/vector
+ * * A primary implementation of dynamic array/vector
  */
 
 #include<stdio.h>
 #include<stdlib.h>
-#include<stdbool.h>
 #include"exception.c"
 
 #define INIT_SIZE 16
@@ -14,8 +12,11 @@ typedef struct vectors{
     int *arr;
     int size;
     int capacity;
-    bool empty;
 }vector;
+
+int is_empty(vector * v){
+    return v->size > 0;
+}
 
 void _shrink_vector(vector *v){
     v->capacity /= 2;
@@ -37,12 +38,13 @@ void append(vector *v, int num){
     }
     *(v->arr + v->size) = num;
     v->size += 1;
-    v->empty = 0;
 }
 
 int pop(vector *v) {
     if(v->size == 0){
-        return NULL;
+        Exception excpt = new_exception(41);
+        printf("Error %d: %s\n", excpt.exp_no, excpt.exp_name);
+        exit(-1);
     }
     v->size -= 1;
     int ret_val = *(v->arr + v->size);
@@ -57,8 +59,8 @@ int get(vector *v, int position){
         return *(v->arr + position);
     }
     else {
-        Exception err = new_exception(1);
-        printf("%s %d\n",err.exp_name, position);
+        Exception err = new_exception(42);
+        printf("Error %d: %s %d\n",err.exp_no, err.exp_name, position);
         exit(-1);
     }
 }
@@ -90,10 +92,27 @@ void insert_at(vector *v, int position, int num){
     }
 }
 
+void delete(vector * v, int index) {
+    int i;
+    if(v->size > index){
+        for(i=index; i<v->size - 1;i++) {
+            *(v->arr + i) = *(v->arr + i + 1);
+        }
+        v->size -= 1;
+    }
+}
+
+int find(vector *v, int value){
+    int i;
+    for(i=0; i<v->size; i++){
+        if(*(v->arr + i) == value){
+            return i;
+        }
+    }
+}
 
 void init_vector(vector *v){
     v->arr = malloc(INIT_SIZE* sizeof(int));
     v->size = 0;
     v->capacity = 16;
-    v->empty = 1;
 }
